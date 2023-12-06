@@ -9,15 +9,37 @@ import {
   TableCell,
   Paper,
 } from "@mui/material";
+import { useEffect, useState } from "react";
 
-const rawData = [
-  { id: 1, name: "Item 1", value: 20 },
-  { id: 2, name: "Item 2", value: 25 },
-  { id: 3, name: "Item 3", value: 18 },
-  // Add more data as needed
-];
+// const rawData = [
+//   { id: 1, name: "Item 1", value: 20 },
+//   { id: 2, name: "Item 2", value: 25 },
+//   { id: 3, name: "Item 3", value: 18 },
+
+// ];
 
 const Data = () => {
+  const [alldata, setAlldata] = useState([]);
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await fetch("http://localhost:8000/data");
+        if (response.ok) {
+          const data = await response.json();
+          setAlldata(data);
+        } else {
+          throw new Error("Failed to fetch data");
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    }
+
+    fetchData();
+  }, []);
+
+  console.log("allData", alldata);
   return (
     <TableContainer component={Paper}>
       <Table>
@@ -25,13 +47,13 @@ const Data = () => {
           <TableRow>
             <TableCell>ID</TableCell>
             <TableCell>Name</TableCell>
-            <TableCell>Value</TableCell>
+            <TableCell>Role</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {rawData.map((row) => (
-            <TableRow key={row.id}>
-              <TableCell>{row.id}</TableCell>
+          {alldata.map((row, index) => (
+            <TableRow key={index}>
+              <TableCell>{index + 1}</TableCell>
               <TableCell>{row.name}</TableCell>
               <TableCell>{row.value}</TableCell>
             </TableRow>

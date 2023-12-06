@@ -1,11 +1,11 @@
 // src/components/Dashboard.js
-import React from "react";
+import { useState } from "react";
 import { Tabs, Tab, Box } from "@mui/material";
 import Analytics from "./Analytics";
 import Data from "./Data";
 
 const Dashboard = () => {
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = useState(0);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
