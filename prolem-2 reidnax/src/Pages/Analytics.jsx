@@ -1,4 +1,4 @@
-// import React from 'react';
+import { useEffect, useState } from "react";
 import {
   Table,
   TableContainer,
@@ -8,6 +8,7 @@ import {
   TableCell,
   Paper,
 } from "@mui/material";
+import { SpinnerCircular } from "spinners-react";
 
 const rawData = [
   { id: 1, name: "Raghav", value: 20 },
@@ -16,27 +17,56 @@ const rawData = [
 ];
 
 const Analytics = () => {
+  const [alldata, setAlldata] = useState([]);
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await fetch("http://localhost:8000/analytics");
+        if (response.ok) {
+          const data = await response.json();
+          setAlldata(data);
+        } else {
+          throw new Error("Failed to fetch data");
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    }
+
+    fetchData();
+  }, []);
   return (
-    <TableContainer component={Paper}>
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell>ID</TableCell>
-            <TableCell>Name</TableCell>
-            <TableCell>Value</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {rawData.map((row) => (
-            <TableRow key={row.id}>
-              <TableCell>{row.id}</TableCell>
-              <TableCell>{row.name}</TableCell>
-              <TableCell>{row.value}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <>
+      {alldata.length > 0 ? (
+        <>
+          <TableContainer component={Paper}>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>ID</TableCell>
+                  <TableCell>Name</TableCell>
+                  <TableCell>Role</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {alldata.map((row, index) => (
+                  <TableRow key={index}>
+                    <TableCell>{index + 1}</TableCell>
+                    <TableCell>{row.name}</TableCell>
+                    <TableCell>{row.value}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </>
+      ) : (
+        <>
+          <SpinnerCircular />
+        </>
+      )}
+    </>
   );
 };
 

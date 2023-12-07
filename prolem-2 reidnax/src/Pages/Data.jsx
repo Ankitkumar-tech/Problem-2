@@ -1,5 +1,6 @@
 // src/components/Data.js
 // import React from 'react';
+import { SpinnerCircular } from "spinners-react";
 import {
   Table,
   TableContainer,
@@ -10,6 +11,7 @@ import {
   Paper,
 } from "@mui/material";
 import { useEffect, useState } from "react";
+// import Shimmer from "./shimmer";
 
 // const rawData = [
 //   { id: 1, name: "Item 1", value: 20 },
@@ -41,26 +43,36 @@ const Data = () => {
 
   console.log("allData", alldata);
   return (
-    <TableContainer component={Paper}>
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell>ID</TableCell>
-            <TableCell>Name</TableCell>
-            <TableCell>Role</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {alldata.map((row, index) => (
-            <TableRow key={index}>
-              <TableCell>{index + 1}</TableCell>
-              <TableCell>{row.name}</TableCell>
-              <TableCell>{row.value}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <>
+      {alldata.length > 0 ? (
+        <>
+          <TableContainer component={Paper}>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>ID</TableCell>
+                  <TableCell>Name</TableCell>
+                  <TableCell>Role</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {alldata.map((row, index) => (
+                  <TableRow key={index}>
+                    <TableCell>{index + 1}</TableCell>
+                    <TableCell>{row.name}</TableCell>
+                    <TableCell>{row.value}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </>
+      ) : (
+        <>
+          <SpinnerCircular />
+        </>
+      )}
+    </>
   );
 };
 
